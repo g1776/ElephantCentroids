@@ -73,7 +73,6 @@ protobuf==3.17.3
 py==1.10.0
 pycparser==2.20
 pydeck==0.6.2
-pygeos==0.2
 Pygments==2.9.0
 pyjsparser==2.7.1
 pyparsing==2.4.7
