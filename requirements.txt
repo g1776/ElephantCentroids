@@ -23,11 +23,10 @@ decorator==5.0.9
 defusedxml==0.7.1
 docopt==0.6.2
 entrypoints==0.3
-Fiona @ file:///C:/Users/grego/pipwin/Fiona-1.8.20-cp39-cp39-win_amd64.whl
+Fiona
 folium==0.12.1
-GDAL @ file:///C:/Users/grego/pipwin/GDAL-3.3.0-cp39-cp39-win_amd64.whl
 geojson==2.5.0
-geopandas @ file:///C:/Users/grego/pipwin/geopandas-0.9.0-py3-none-any.whl
+geopandas
 gevent==21.1.2
 gitdb==4.0.7
 GitPython==3.1.18
@@ -74,6 +73,7 @@ protobuf==3.17.3
 py==1.10.0
 pycparser==2.20
 pydeck==0.6.2
+pygeos==0.2
 Pygments==2.9.0
 pyjsparser==2.7.1
 pyparsing==2.4.7
