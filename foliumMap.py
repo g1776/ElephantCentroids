@@ -10,9 +10,10 @@ def plot_centroids(m, centroids):
 
     id = centroids["tag-local-identifier"].iloc[0]
 
+    group = folium.FeatureGroup(name=id).add_to(m)
 
     # plot centroids
-    cluster = folium.plugins.MarkerCluster().add_to(m)
+    cluster = folium.plugins.MarkerCluster().add_to(group)
 
     def add_marker(centroid):
         text = f'<b>{centroid["tag-local-identifier"]}</b><br/>{centroid["feature space"]}'

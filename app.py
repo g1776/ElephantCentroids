@@ -17,7 +17,7 @@ st.markdown("## Gregory Glatzer")
 
 
 # inputs
-dataset = st.selectbox(
+dataset = st.sidebar.selectbox(
     'Choose which dataset to view',
     ("Etosha", 'Kruger', "Forest Elephants"),
 )
@@ -28,7 +28,9 @@ elif dataset == "Etosha":
 elif dataset == "Forest Elephants":
     centroids_fp = './data/forest_centroids.json'
     
-fuzzy = st.checkbox("Use fuzzy matches", value=True)
+fuzzy = st.sidebar.checkbox("Use fuzzy matches", value=True)
+house_size = st.sidebar.slider("Settlement radius", min_value=1, max_value=3, value=1, step=1)
+num_lines = st.sidebar.slider("Number of lines", min_value=0, max_value=30, value=10, step=5, help="Shows N closest pairs of elephants and settlements.")
 
 
 
@@ -39,12 +41,10 @@ centroids.columns = ["location-long", "location-lat", "stationTemp",
     "cluster", "feature space", "tag-local-identifier", "fuzzy", "geometry"]
 
 # layout placeholders
-col1, col2, col3 = st.beta_columns((3,1, 1))
-with col3:
-    st.markdown("## Toggle elephants")
-    checkboxes = []
-    for id in centroids['tag-local-identifier'].unique():
-        checkboxes.append([id, st.checkbox(id, value=True)])
+col1, col2 = st.beta_columns((1.5,1))
+
+with col2: 
+    st.dataframe(centroids.drop("geometry", axis=1), height=500)
 
 # process
 with col1:
@@ -74,19 +74,19 @@ folium.TileLayer(
 
 # add places and centroids
 progress.text("plotting elephant centroids")
-places, lines = get_settlements(centroids, progress)
+places, lines = get_settlements(centroids, progress, size=house_size, n=num_lines)
 plot_places(m, places, lines, progress)
-for id_checkbox in checkboxes:
-    if id_checkbox[1]:
-        id = id_checkbox[0]
-        group = centroids[centroids["tag-local-identifier"] == id]
-        progress.text(f"Plotting marker for {id}")
-        markers = plot_centroids(m, group)
+for id in centroids["tag-local-identifier"].unique():
+    group = centroids[centroids["tag-local-identifier"] == id]
+    progress.text(f"Plotting marker for {id}")
+    markers = plot_centroids(m, group)
+
+folium.LayerControl().add_to(m)
 
 # content
 progress.text("Rendering map")
 with col1:
-    folium_static(m)
+    folium_static(m, width=600)
 
 
 # cleanup

@@ -45,16 +45,15 @@ def _get_close_places(places, centroids, n=10):
 
 
 
-def get_settlements(centroids, progress):
+def get_settlements(centroids, progress, size=1, n=10):
     # get settlements
     progress.text("getting human settlements")
 
     center_lat = centroids["location-lat"].median()
     center_long= centroids["location-long"].median()
-    places = _get_nearby_settlements(center_lat, center_long)
+    places = _get_nearby_settlements(center_lat, center_long, size=size)
 
     # get n closest settlements
-    n = 10
     progress.text(f"calculating {n} closest human settlements")
     closest_places = _get_close_places(places, centroids, n=n)
     centroids_geo = centroids[["tag-local-identifier", "geometry"]]
