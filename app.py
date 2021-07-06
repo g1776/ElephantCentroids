@@ -80,7 +80,7 @@ for id in centroids["tag-local-identifier"].unique():
 
 # add Namibia pop density
 if dataset == "Etosha":
-    pop = read_file('./data/the density of people.zip', encoding='utf-8')
+    pop = read_file('./data/The density of people.zip', encoding='utf-8')
     pop.crs = "EPSG:4326"
     ranges = list(pop.RANGE.unique())
     colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6']
