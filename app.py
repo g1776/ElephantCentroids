@@ -80,6 +80,7 @@ for id in centroids["tag-local-identifier"].unique():
 
 # Population densities
 if dataset == "Etosha":
+    progress.text("Loading Population density overlay")
     pop_choropleth('./data/The density of people.zip', m)
 
 # map
