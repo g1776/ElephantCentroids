@@ -40,17 +40,13 @@ centroids = centroids[centroids.fuzzy == fuzzy]
 centroids.columns = ["location-long", "location-lat", "stationTemp", 
     "cluster", "feature space", "tag-local-identifier", "fuzzy", "geometry"]
 
-# layout placeholders
-col1, col2 = st.beta_columns((1.5,1))
-
-with col2: 
-    st.dataframe(centroids.drop("geometry", axis=1), height=500)
 
 # process
-with col1:
-    loading = st.markdown("### loading...")
-    progress = st.empty()
-    gif_runner = st.image('./img/elephant.gif')
+with st.beta_expander("View raw data"):
+    st.dataframe(centroids.drop("geometry", axis=1))
+loading = st.markdown("### loading...")
+progress = st.empty()
+gif_runner = st.image('./img/elephant.gif')
 
 
 # create map
@@ -83,10 +79,10 @@ for id in centroids["tag-local-identifier"].unique():
 
 folium.LayerControl().add_to(m)
 
-# content
+
+# map
 progress.text("Rendering map")
-with col1:
-    folium_static(m, width=600)
+folium_static(m)
 
 
 # cleanup
