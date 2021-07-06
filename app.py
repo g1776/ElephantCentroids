@@ -5,7 +5,7 @@ from geopandas import read_file
 import folium
 
 from foliumMap import plot_centroids, plot_places
-from utils import get_settlements
+from utils import get_settlements, pop_choropleth
 
 # setup
 st.set_page_config(layout="wide") 
@@ -78,19 +78,9 @@ for id in centroids["tag-local-identifier"].unique():
     plot_centroids(m, group)
 
 
-# add Namibia pop density
+# Population densities
 if dataset == "Etosha":
-    pop = read_file('./data/The density of people.zip', encoding='utf-8')
-    pop.crs = "EPSG:4326"
-    ranges = list(pop.RANGE.unique())
-    colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6']
-    folium.GeoJson(data=pop, name="Population density",
-        show=False,
-        style_function=lambda feature: {
-            'fillColor': colors[ranges.index(feature['properties']["RANGE"])]
-        }
-    ).add_to(m)
-
+    pop_choropleth('./data/The density of people.zip', m)
 
 # map
 folium.LayerControl().add_to(m)

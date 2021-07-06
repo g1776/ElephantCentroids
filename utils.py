@@ -3,7 +3,8 @@ from OSMPythonTools.overpass import overpassQueryBuilder
 from OSMPythonTools.overpass import Overpass
 from shapely.geometry import Point
 import pandas as pd
-from geopandas import GeoDataFrame
+import folium
+from geopandas import GeoDataFrame, read_file
 
 def _get_nearby_settlements(lat, long, size=1):
     overpass = Overpass()
@@ -63,3 +64,22 @@ def get_settlements(centroids, progress, size=1, n=10):
     closest_geo.drop("id", axis=1, inplace=True)
 
     return places, closest_geo
+
+
+def pop_choropleth(zip, m):
+    pop = read_file(zip, encoding='utf-8')
+    pop.crs = "EPSG:4326"
+    ranges = list(pop.RANGE.unique())
+    colors = ['#556b2f', '#191970', '#ff4500', '#ffd700', '#00ff7f', '#00bfff', '#0000ff', '#ff1493']
+    choropleth = folium.GeoJson(data=pop, name="Population density",
+        show=False,
+        style_function=lambda feature: {
+            'fillColor': colors[ranges.index(feature['properties']["RANGE"])],
+            'fillOpacity': 0.2
+        }
+    ).add_to(m)
+    choropleth.add_child(folium.features.GeoJsonTooltip(
+        fields=['RANGE'],
+        aliases=['Population density per km^2'],
+        style=('background-color: grey; color: white;'),
+        localize=True))
