@@ -28,10 +28,11 @@ def plot_centroids(m, centroids):
 
     markers = centroids.apply(add_marker, axis=1)
 
-    return markers
+    return group
 
 
 def plot_places(m, places, lines, progress):
+    group = folium.FeatureGroup(name="Settlements").add_to(m)
     # plot places
     for i, row in places.iterrows():
         text = f'<b>{row.loc["name"]}</b>'
@@ -41,7 +42,7 @@ def plot_places(m, places, lines, progress):
             popup=text, 
             tooltip=text, 
             icon=house_icon
-        ).add_to(m)
+        ).add_to(group)
 
 
     # plot closest_geo
@@ -52,4 +53,4 @@ def plot_places(m, places, lines, progress):
         folium.PolyLine(
             points,
             color="green"
-        ).add_to(m)
+        ).add_to(group)

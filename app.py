@@ -28,9 +28,9 @@ elif dataset == "Etosha":
 elif dataset == "Forest Elephants":
     centroids_fp = './data/forest_centroids.json'
     
-fuzzy = st.sidebar.checkbox("Use fuzzy matches", value=True)
+fuzzy = st.sidebar.checkbox("Use fuzzy matches", value=True, help="Use centroids calculated with fuzzy timestamp matching between dataset and weather station")
 house_size = st.sidebar.slider("Settlement radius", min_value=1, max_value=3, value=1, step=1)
-num_lines = st.sidebar.slider("Number of lines", min_value=0, max_value=30, value=10, step=5, help="Shows N closest pairs of elephants and settlements.")
+num_lines = st.sidebar.slider("Number of lines", min_value=0, max_value=30, value=10, step=5, help="Shows green lines for N closest pairs of elephants and settlements.")
 
 
 
@@ -75,12 +75,25 @@ plot_places(m, places, lines, progress)
 for id in centroids["tag-local-identifier"].unique():
     group = centroids[centroids["tag-local-identifier"] == id]
     progress.text(f"Plotting marker for {id}")
-    markers = plot_centroids(m, group)
+    plot_centroids(m, group)
 
-folium.LayerControl().add_to(m)
+
+# add Namibia pop density
+if dataset == "Etosha":
+    pop = read_file('./data/the density of people.zip', encoding='utf-8')
+    pop.crs = "EPSG:4326"
+    ranges = list(pop.RANGE.unique())
+    colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6']
+    folium.GeoJson(data=pop, name="Population density",
+        show=False,
+        style_function=lambda feature: {
+            'fillColor': colors[ranges.index(feature['properties']["RANGE"])]
+        }
+    ).add_to(m)
 
 
 # map
+folium.LayerControl().add_to(m)
 progress.text("Rendering map")
 folium_static(m)
 
