@@ -19,18 +19,18 @@ st.markdown("## Gregory Glatzer")
 # inputs
 dataset = st.sidebar.selectbox(
     'Choose which dataset to view',
-    ("Etosha", 'Kruger', "Forest Elephants"),
+    ("Etosha", 'Kruger', "Blake et al"),
 )
 if dataset == "Kruger":
     centroids_fp = './data/kruger_centroids.json'
 elif dataset == "Etosha":
     centroids_fp = './data/etosha_centroids.json'
-elif dataset == "Forest Elephants":
+elif dataset == "Blake et al":
     centroids_fp = './data/forest_centroids.json'
     
 fuzzy = st.sidebar.checkbox("Use fuzzy matches", value=True, help="Use centroids calculated with fuzzy timestamp matching between dataset and weather station")
 house_size = st.sidebar.slider("Settlement radius", min_value=1, max_value=3, value=1, step=1)
-num_lines = st.sidebar.slider("Number of lines", min_value=0, max_value=30, value=10, step=5, help="Shows green lines for N closest pairs of elephants and settlements.")
+num_lines = st.sidebar.slider("Number of lines", min_value=0, max_value=10, value=30, step=5, help="Shows green lines for N closest pairs of elephants and settlements.")
 
 
 

@@ -75,7 +75,7 @@ def pop_choropleth(zip, m):
         show=False,
         style_function=lambda feature: {
             'fillColor': colors[ranges.index(feature['properties']["RANGE"])],
-            'fillOpacity': 0.2
+            'fillOpacity': 0.1
         }
     ).add_to(m)
     choropleth.add_child(folium.features.GeoJsonTooltip(
